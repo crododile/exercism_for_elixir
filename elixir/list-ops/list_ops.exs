@@ -34,7 +34,15 @@ defmodule ListOps do
 
   @spec map(list, (any -> any)) :: list
   def map(l, f) do
+    map l, f, []
+  end
 
+  def map([h | l], f, acc) do
+    map(l, f, [f.(h) | acc])
+  end
+
+  def map([], _f, acc) do
+    reverse acc
   end
 
   @spec filter(list, (any -> as_boolean(term))) :: list
