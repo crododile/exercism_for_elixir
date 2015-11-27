@@ -84,7 +84,6 @@ defmodule ListOps do
     append a, [], [h|acc]
   end
 
-
   def append([],[],acc) do
     acc
   end
@@ -94,22 +93,14 @@ defmodule ListOps do
     concat ll, []
   end
 
-  def concat([h|ll], acc) do
-    reacc = into(h, acc)
-    concat ll, reacc
+  def concat([[h|t1]|ll], acc) do
+    concat [t1|ll], [h|acc]
   end
 
+  def concat([[]|ll], acc) do
+    concat ll, acc
+  end
   def concat([], acc) do
     reverse acc
   end
-
-  def into([h|list], acc) do
-    into list, [h|acc]
-  end
-
-  def into([], acc) do
-    acc
-  end
-
-
 end
