@@ -47,22 +47,69 @@ defmodule ListOps do
 
   @spec filter(list, (any -> as_boolean(term))) :: list
   def filter(l, f) do
+    filter(l, f, [])
+  end
 
+  def filter([h|l], f, acc) do
+     case f.(h) do
+      true -> filter l, f, [h | acc]
+      _false -> filter l, f, acc
+    end
+  end
+
+  def filter([], _f, acc) do
+    reverse acc
   end
 
   @type acc :: any
   @spec reduce(list, acc, ((any, acc) -> acc)) :: acc
-  def reduce(l, acc, f) do
-
+  def reduce([h|l], acc, f) do
+    reduce(l, f.(h, acc), f)
+  end
+  
+  def reduce([], acc, _f) do
+    acc
   end
 
   @spec append(list, list) :: list
   def append(a, b) do
+    append reverse(a), reverse(b), []
+  end
 
+  def append(a, [h|b], acc) do
+    append a, b, [h|acc]
+  end
+
+  def append([h|a], [], acc) do
+    append a, [], [h|acc]
+  end
+
+
+  def append([],[],acc) do
+    acc
   end
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
-
+    concat ll, []
   end
+
+  def concat([h|ll], acc) do
+    reacc = into(h, acc)
+    concat ll, reacc
+  end
+
+  def concat([], acc) do
+    reverse acc
+  end
+
+  def into([h|list], acc) do
+    into list, [h|acc]
+  end
+
+  def into([], acc) do
+    acc
+  end
+
+
 end
